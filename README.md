@@ -32,14 +32,16 @@ A modern Python package providing common utilities. Package name: `uv-common-lib
 This project supports Python 3.13 (or 3.12 if available). Install with Homebrew:
 
 ```sh
-brew install python@3.13
+brew install python@3.11
 ```
 
 ### 2. Create and Activate a Virtual Environment
 
+
 ```sh
-/opt/homebrew/bin/python3.13 -m venv .venv
+/opt/homebrew/bin/python -m venv .venv
 source .venv/bin/activate
+pip install -r requirements.txt  # Install all required dependencies
 ```
 
 On Windows:
@@ -134,6 +136,7 @@ This project uses `pytest` for testing. To run all tests (ensure the src directo
 uv pip install --upgrade pytest
 # or
 pip install --upgrade pytest
+pip install pyspark  # Required for streaming_listener tests
 PYTHONPATH=src pytest
 ```
 
@@ -148,6 +151,7 @@ Tests are located in the `tests/` directory and cover core logging, formatting, 
 - Edit or add modules in `src/uv_common_lib/` as needed.
 - Update `pyproject.toml` for dependencies, version, and metadata.
 - Optionally, add or update tests and documentation.
+- **Versioning:** This project uses [bump2version](https://github.com/c4urself/bump2version) to manage the version in `pyproject.toml`. To bump the version, run `bump2version patch` (or `minor`/`major`). The version will be updated, committed, and tagged automatically.
 
 ### Build a Wheel (.whl) File
 
@@ -264,6 +268,11 @@ The logging system in `uv-common-lib` is based on the Adapter and Enrichment des
 ---
 
 ## Release Notes
+
+
+### v0.1.1 (Unreleased)
+- Added bump2version configuration for automated version management.
+- Added pyspark as a required dependency for streaming_listener tests.
 
 ### v0.1.0 (2026-03-04)
 - Initial release of `uv-common-lib`.

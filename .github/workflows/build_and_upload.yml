@@ -1,0 +1,35 @@
+name: Build and Upload Python Package
+on:
+  push:
+    tags:
+    - 'v*.*.*'
+  workflow_dispatch:
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.13'
+    - name: Create and activate venv
+      run: |
+        python -m venv .venv
+        source .venv/bin/activate
+        python -m pip install --upgrade pip
+        pip install build
+    - name: Build package
+      run: |
+        source .venv/bin/activate
+        python -m build
+    - name: Upload artifacts to S3
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      run: |-
+        source .venv/bin/activate
+        pip install awscli
+        aws s3 cp dist/ s3://${{ secrets.S3_BUCKET }}/uv-common-lib/ --recursive
