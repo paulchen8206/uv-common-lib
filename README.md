@@ -151,7 +151,28 @@ Tests are located in the `tests/` directory and cover core logging, formatting, 
 - Edit or add modules in `src/uv_common_lib/` as needed.
 - Update `pyproject.toml` for dependencies, version, and metadata.
 - Optionally, add or update tests and documentation.
-- **Versioning:** This project uses [bump2version](https://github.com/c4urself/bump2version) to manage the version in `pyproject.toml`. To bump the version, run `bump2version patch` (or `minor`/`major`). The version will be updated, committed, and tagged automatically.
+**Versioning:** This project uses [bump2version](https://github.com/c4urself/bump2version) to manage the version in `pyproject.toml`.
+
+#### Bump2version Steps
+
+1. Make sure bump2version is installed:
+  ```sh
+  pip install bump2version
+  ```
+2. To bump the version, run one of:
+  ```sh
+  bump2version patch   # for bugfix releases (e.g., 0.1.1 → 0.1.2)
+  bump2version minor   # for feature releases (e.g., 0.1.1 → 0.2.0)
+  bump2version major   # for breaking changes (e.g., 0.1.1 → 1.0.0)
+  ```
+3. bump2version will:
+  - Update the version in `pyproject.toml` and other configured files
+  - Commit the change
+  - Create a git tag for the new version
+4. Push the commit and tag to your remote repository:
+  ```sh
+  git push && git push --tags
+  ```
 
 ### Build a Wheel (.whl) File
 
