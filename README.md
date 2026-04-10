@@ -6,6 +6,8 @@ Common structured logging utilities for Databricks and PySpark workloads.
 
 - Structured log adapters with contextual enrichment
 - JSON formatting for log aggregation pipelines
+- Pydantic-backed payload validation and serialization
+- Strict log-level validation (`DEBUG|INFO|WARNING|ERROR|CRITICAL|NOTSET`)
 - File sink helpers for JSONL output
 - Streaming listener utilities for Spark workloads
 
@@ -33,6 +35,14 @@ Run the test suite:
 ```sh
 uv run pytest
 ```
+
+Run optional formatter performance benchmarks:
+
+```sh
+RUN_PERF=1 uv run pytest -m performance
+```
+
+By default, performance tests are skipped in normal `uv run pytest` runs.
 
 If you want to run the optional PySpark test path locally, install the extra group first:
 
@@ -100,3 +110,9 @@ uv tool run --from awscli aws s3 cp dist/ s3://<your-bucket>/uv-common-lib/ --re
 - The default development setup only installs the core test dependencies.
 - The `spark` dependency group is optional because the Spark-specific test is already guarded when PySpark is unavailable.
 - `uv run` uses the project environment directly, so no manual virtual environment activation or `PYTHONPATH` setup is required.
+
+## Pydantic Validation
+
+- Log events are validated through Pydantic models before serialization.
+- Standard log levels are enforced and invalid levels are rejected.
+- Databricks context fields are normalized through a typed context model.

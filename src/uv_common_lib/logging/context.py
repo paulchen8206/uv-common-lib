@@ -10,6 +10,8 @@ import os
 import uuid
 from typing import Dict, Optional
 
+from .models import DatabricksContextModel
+
 
 def correlation_id() -> str:
     """
@@ -46,4 +48,5 @@ def databricks_context() -> Dict[str, Optional[str]]:
         # Spark not available or no active session - skip app ID
         pass
 
-    return ctx
+    context_model = DatabricksContextModel.model_validate(ctx)
+    return context_model.model_dump()

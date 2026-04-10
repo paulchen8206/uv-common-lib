@@ -20,6 +20,7 @@ def test_databricks_context_uses_env(monkeypatch):
     assert ctx["dbx_job_id"] == "123"
     assert ctx["dbx_run_id"] == "456"
     assert ctx["dbx_task_key"] == "ingest"
+    assert "spark_app_id" in ctx
 
 
 def test_databricks_context_handles_no_spark():

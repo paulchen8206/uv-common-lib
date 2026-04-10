@@ -9,17 +9,20 @@ Adds file-based logging to structured logger instances, writing JSON log lines t
 import logging
 import datetime
 import os
+
+from typing import Union
+
 from .json_formatter import JsonFormatter
+from .logger import StructuredLoggerAdapter
 
 
-def add_volume_file_handler(base_logger: logging.Logger, volume_dir: str) -> None:
+def add_volume_file_handler(base_logger: Union[logging.Logger, StructuredLoggerAdapter], volume_dir: str) -> None:
     """
     Add a file handler to write JSON logs to a Databricks Volume.
     Creates a timestamped JSON Lines file in the given directory and attaches it to the logger.
 
     Example:
-        from databricks_custom_logging import get_logger
-        from databricks_custom_logging.file_sink import add_volume_file_handler
+        from uv_common_lib.logging import get_logger, add_volume_file_handler
         logger = get_logger("myapp")
         add_volume_file_handler(logger, "/Volumes/main/default/logs")
         logger.info("event", extra={"extra": {"status": "complete"}})
@@ -42,6 +45,6 @@ def add_volume_file_handler(base_logger: logging.Logger, volume_dir: str) -> Non
     # Use JSON formatter to output structured logs
     fh.setFormatter(JsonFormatter())
 
-    # Add handler to the underlying logger
-    # Note: base_logger is a LoggerAdapter, so we access .logger to get the Logger
-    base_logger.logger.addHandler(fh)
+    # Add handler to either a LoggerAdapter-backed logger or a bare Logger.
+    target_logger = base_logger.logger if isinstance(base_logger, logging.LoggerAdapter) else base_logger
+    target_logger.addHandler(fh)
