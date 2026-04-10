@@ -6,7 +6,13 @@ Listens to PySpark streaming query lifecycle events (start, progress, terminatio
 and logs them as structured JSON for analytics and monitoring.
 """
 
-from pyspark.sql.streaming import StreamingQueryListener
+try:
+    from pyspark.sql.streaming import StreamingQueryListener
+except ImportError:
+    class StreamingQueryListener:  # type: ignore[no-redef]
+        """Fallback base class when PySpark is not installed."""
+
+        pass
 
 
 class JsonStreamingListener(StreamingQueryListener):

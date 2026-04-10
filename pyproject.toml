@@ -1,13 +1,24 @@
 [project]
 name = "uv-common-lib"
-version = "0.2.0"  # Managed by bump2version
-description = "Add your description here"
+version = "0.2.0"
+description = "Common structured logging utilities for Databricks and PySpark workloads."
 readme = "README.md"
 authors = [
     { name = "paulchen8206", email = "70728547+paulchen8206@users.noreply.github.com" }
 ]
 requires-python = ">=3.11"
 dependencies = []
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.0,<10",
+]
+spark = [
+    "pyspark>=3.5.0,<4",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
 
 [build-system]
 requires = ["uv_build>=0.8.4,<0.9.0"]
